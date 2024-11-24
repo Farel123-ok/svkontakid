@@ -301,3 +301,31 @@ case 'svkontakgc': {
    }
 }
 break;
+case "listgc": {
+let gcall = Object.values(await KiZex.groupFetchAllParticipating().catch(_=> null))
+let listgc = `*𝐋𝐈𝐒𝐓 𝐀𝐋𝐋 𝐂𝐇𝐀𝐓 𝐆𝐑𝐎𝐔𝐏*\n\n`
+await gcall.forEach((u, i) => {
+listgc += `⚡ 𝗧𝗜𝗧𝗟𝗘 : ${u.subject}\nID : ${u.id}\n⚡ 𝗠𝗘𝗠𝗕𝗘𝗥 : ${u.participants.length}\n🪛 𝗦𝗧𝗔𝗧𝗨𝗦: ${u.announce == true ? "𝗧𝗨𝗧𝗨𝗣 ❌" : "𝗕𝗨𝗞𝗔 ✅"}\n⚡ 𝗖𝗥𝗘𝗔𝗧𝗢𝗥 : ${u.owner ? u.owner.split('@')[0] : '⚡ 𝗦𝗨𝗗𝗔𝗛 𝗞𝗘𝗟𝗨𝗔𝗥'}\n\n`
+})
+m.reply(listgc)
+}
+break
+case "startjpm": {
+if (!isOwner) return m.reply('Hanya Zox');
+var teksnya = await fs.readFileSync("./all/database/teksjpm.js").toString()
+if (teksnya.length < 1) return m.reply("⚡ 𝗧𝗘𝗞𝗦 𝗝𝗣𝗠 𝗚𝗞 𝗔𝗗𝗔")
+var teks = `${teksnya}`
+let total = 0
+let getGroups = await KiZex.groupFetchAllParticipating()
+let usergc = await Object.keys(getGroups)
+m.reply(`⚡ 𝗣𝗥𝗢𝗦𝗘𝗦 𝗠𝗘𝗡𝗚𝗜𝗥𝗜𝗠 ${usergc.length} 𝗚𝗥𝗨𝗣 𝗕𝗬 𝗭𝗢𝗫 𝗦𝗧𝗢𝗥𝗘`)
+for (let jid of usergc) {
+try {
+await KiZex.sendMessage(jid, {text: teks}, {quoted: qloc})
+total += 1
+} catch {}
+await sleep(4000)
+}
+m.reply(`⚡ 𝗕𝗘𝗥𝗛𝗔𝗦𝗜𝗟 𝗗𝗜 𝗞𝗜𝗥𝗜𝗠 ${total} 𝗚𝗥𝗨𝗣 𝗕𝗬 𝗭𝗢𝗫`)
+}
+break
